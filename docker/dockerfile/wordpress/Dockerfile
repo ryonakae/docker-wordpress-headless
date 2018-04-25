@@ -1,4 +1,4 @@
-FROM wordpress:fpm-alpine
+FROM wordpress:4.9-php7.2-fpm-alpine
 
 # 不足してるPHPライブラリをインストール
 RUN apk update && apk add \
