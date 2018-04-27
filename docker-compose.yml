@@ -8,12 +8,9 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - data-wp:/var/www/html:ro
+      - data-api:/var/www/api:ro
+      - ./client:/var/www/client
       - ./docker/settings/nginx/conf.d:/etc/nginx/conf.d:ro
-    depends_on:
-      - wordpress
-      - node
-      - mysql
     networks:
       - front
       - back
@@ -25,11 +22,8 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - ./client:/usr/src/app
-    depends_on:
-      - wordpress
-      - mysql
-    working_dir: /usr/src/app
+      - ./client:/var/www/client
+    working_dir: /var/www/client
     command: 'npm start'
     networks:
       - back
@@ -41,7 +35,7 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - data-wp:/var/www/html:rw
+      - data-api:/var/www/html:rw
       - ./docker/settings/wordpress:/usr/local/etc/php:ro
     depends_on:
       - mysql
@@ -60,7 +54,7 @@ services:
       - back
 
 volumes:
-  data-wp:
+  data-api:
   data-db:
 
 networks:
