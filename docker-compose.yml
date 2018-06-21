@@ -8,9 +8,8 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - data-api:/var/www/api:ro
-      - ./client:/var/www/client
       - ./docker/settings/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./client:/var/www/client
     networks:
       - front
       - back
@@ -24,6 +23,9 @@ services:
     volumes:
       - ./client:/var/www/client
     working_dir: /var/www/client
+    environment:
+      - PORT=3000
+      - WP_URL=http://wordpress:80
     command: 'npm start'
     networks:
       - back
@@ -35,8 +37,8 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - data-api:/var/www/html:rw
       - ./docker/settings/wordpress:/usr/local/etc/php:ro
+      - data-api:/var/www/html:rw
     depends_on:
       - mysql
     networks:
